@@ -1,0 +1,3 @@
+output
+*__pycache__
+src/config/getty.cfg.local
