@@ -43,7 +43,10 @@ def write_data(file_name, data, start_date, end_date, value):
     file = open(file_name, 'w+')
     date = start_date
     while date != end_date:
-        result += data.get(date, date + ',,,\n')
+        if date == start_date:
+            result += data.get(date, date + ',0,0,0\n')
+        else:
+            result += data.get(date, date + ',,,\n')
         datetime_object = datetime.strptime(date, DATE_MASK) + timedelta(days=1)
         date = datetime_object.strftime(DATE_MASK)
     result += value
