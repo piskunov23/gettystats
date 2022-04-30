@@ -4,6 +4,7 @@ import configparser
 from pathlib import Path
 from datetime import datetime
 from webbot import Browser
+from datetime import date
 
 from sftp import copy_to_sftp
 from data import update_data, already_collected
@@ -26,6 +27,7 @@ def main() -> int:
 
     # read config
     if os.path.isfile(FILE_CFG):
+        print('Reading src/config/getty.cfg')
         credentials, ftp, cfg = read_config(FILE_CFG)
     else:
         print('Config file getty.cfg not found')
@@ -37,7 +39,7 @@ def main() -> int:
 
     if username == '' or password == '':
         if os.path.isfile(FILE_FALLBACK_CFG):
-            print('Getting local config')
+            print('src/config/getty.cfg is not configured, using src/config/getty.cfg.local')
             credentials, ftp, cfg = read_config(FILE_FALLBACK_CFG)
             username = credentials.get('username')
             password = credentials.get('password')
@@ -48,6 +50,8 @@ def main() -> int:
 
     # check if it has been run today
     output_file = cfg.get('output_file')
+    output_file = os.path.dirname(output_file) + \
+        '/' + str(date.today().year) + '_' + os.path.basename(output_file)
     if already_collected(output_file):
         print('The data already collected today, exit.')
         return 1

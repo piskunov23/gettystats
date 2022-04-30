@@ -4,9 +4,11 @@ import time
 from pathlib import Path
 from datetime import timedelta
 from datetime import datetime
+from datetime import date
 
 
 HEADER = 'Date,Photos,Illustrations,Videos\n'
+HEADER_START = 'Date'
 DATE_MASK = '%d-%m-%Y'
 
 def already_collected(file_name):
@@ -22,22 +24,17 @@ def already_collected(file_name):
 
 def read_data(file_name, current_date):
     data = {}
-    start_date = current_date
     if not os.path.isfile(file_name):
-        return start_date, data
-    start_date_read = False
+        return data
     with open(file_name, 'r') as file:
         for line in file:
-            if line == HEADER:
+            if HEADER_START in line:
                 print('Reading data...')
             else:
                 key = line.split(',')[0]
-                if not start_date_read:
-                    start_date = key
-                    start_date_read = True
                 data[key] = line
     file.close()
-    return start_date, data
+    return data
 
 def write_data(file_name, data, start_date, end_date, value):
     print('Writing data...')
@@ -56,6 +53,8 @@ def write_data(file_name, data, start_date, end_date, value):
 
 def update_data(file_name, data_as_string):
     current_date = datetime.now().strftime(DATE_MASK)
-    start_date, data = read_data(file_name, current_date)
+    data = read_data(file_name, current_date)
+    print(data)
+    start_date = '01-01-' + str(date.today().year)
     value = current_date + ',' + data_as_string
     write_data(file_name, data, start_date, current_date, value)
