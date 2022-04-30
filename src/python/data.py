@@ -7,7 +7,7 @@ from datetime import datetime
 
 
 HEADER = 'Date,Photos,Illustrations,Videos\n'
-DATE_MASK = '%d/%m/%Y'
+DATE_MASK = '%d-%m-%Y'
 
 def already_collected(file_name):
     if not os.path.isfile(file_name):

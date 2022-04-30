@@ -35,15 +35,16 @@ def main() -> int:
     password = credentials.get('password')
     secondary_password = credentials.get('secondary_password')
 
-    if ( username == '' or password == '') and os.path.isfile(FILE_FALLBACK_CFG):
-        print('Getting local config')
-        credentials, ftp, cfg = read_config(FILE_FALLBACK_CFG)
-        username = credentials.get('username')
-        password = credentials.get('password')
-        secondary_password = credentials.get('secondary_password')
-    else:
-        print('Username or password is not set, please edit src/config/getty.cfg')
-        return 1
+    if username == '' or password == '':
+        if os.path.isfile(FILE_FALLBACK_CFG):
+            print('Getting local config')
+            credentials, ftp, cfg = read_config(FILE_FALLBACK_CFG)
+            username = credentials.get('username')
+            password = credentials.get('password')
+            secondary_password = credentials.get('secondary_password')
+        else:
+            print('Username or password is not set, please edit src/config/getty.cfg')
+            return 1
 
     # check if it has been run today
     output_file = cfg.get('output_file')
