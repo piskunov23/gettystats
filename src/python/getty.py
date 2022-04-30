@@ -13,26 +13,27 @@ KEY_PAGE = 'Exclusivity and royalty status'
 def main() -> int:
 
     # read config
+    config = configparser.RawConfigParser()
     if os.path.isfile(FILE_CFG):
-        config = configparser.RawConfigParser()
         config.read(FILE_CFG)
         credentials = dict(config.items('CREDENTIALS'))
-        urls = dict(config.items('URLS'))
+        ftp = dict(config.items('FTP'))
+        cfg = dict(config.items('CONFIG'))
     else:
         print('Config file getty.cfg not found')
         return 1
 
     if (credentials.get('username') == '' or credentials.get('password') == '') and os.path.isfile(FILE_FALLBACK_CFG):
-        config = configparser.RawConfigParser()
         config.read(FILE_FALLBACK_CFG)
         credentials = dict(config.items('CREDENTIALS'))
-        urls = dict(config.items('URLS'))
+        ftp = dict(config.items('FTP'))
+        cfg = dict(config.items('CONFIG'))
     else:
         print('Username or password is not set, please edit src/config/getty.cfg')
         return 1
 
     # exit if data already collected
-    output_file = urls.get('output_file').strip()
+    output_file = cfg.get('output_file')
     date = datetime.now().strftime("%d/%m/%Y")
     if os.path.isfile(output_file):
         with open(output_file, 'r') as f:
@@ -42,8 +43,8 @@ def main() -> int:
 
     web = Browser(showWindow=False)
     web.go_to('https://esp.gettyimages.com/sign-in')
-    web.type(credentials.get('username').strip(), into = 'Username')
-    web.type(credentials.get('password').strip(), into = 'Password')
+    web.type(credentials.get('username'), into = 'Username')
+    web.type(credentials.get('password'), into = 'Password')
     web.click('SIGN IN')
     web.click('Account Management')
 
@@ -92,6 +93,12 @@ def main() -> int:
     file.close()
     print('data saved')
     web.quit()
+
+    host = ftp.get('ftp_host')
+    ftp_user = ftp.get('ftp_user')
+    ftp_password = ftp.get('ftp_user')
+    copy_to_sftp(output_file, host, ftp_user, ftp_password)
+
     return 0
 
 if __name__ == '__main__':
