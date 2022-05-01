@@ -57,7 +57,16 @@ def write_data(file_name, data, start_date, end_date, value):
 def update_data(file_name, data_as_string):
     current_date = datetime.now().strftime(DATE_MASK)
     data = read_data(file_name, current_date)
-    print(data)
     start_date = '01-01-' + str(date.today().year)
     value = current_date + ',' + data_as_string
     write_data(file_name, data, start_date, current_date, value)
+
+def convert(source_file, output_file) -> int:
+    if not os.path.isfile(source_file):
+        print('File to convert is not found ' + source_file)
+        return False
+    with open(source_file, 'r') as file:
+        for line in file:
+            print(line)
+    print('just test: ' + source_file)
+    return 0

@@ -1,5 +1,13 @@
 import os.path
 import configparser
+import argparse
+import matplotlib.pyplot as plt
+import numpy as np
+import matplotlib
+
+from datetime import timedelta
+from datetime import datetime
+from datetime import date
 
 from pathlib import Path
 from datetime import datetime
@@ -7,8 +15,11 @@ from webbot import Browser
 from datetime import date
 
 from sftp import copy_to_sftp
-from data import update_data, already_collected
+from data import update_data, already_collected, convert
 from web import get_data
+
+#to run in browser
+#matplotlib.use("webagg")
 
 FILE_CFG = 'src/config/getty.cfg'
 FILE_FALLBACK_CFG = 'src/config/getty.cfg.local'
@@ -23,7 +34,7 @@ def read_config(file_name):
     cfg = dict(config.items('CONFIG'))
     return credentials, ftp, cfg
 
-def main() -> int:
+def update() -> int:
 
     # read config
     if os.path.isfile(FILE_CFG):
@@ -72,4 +83,37 @@ def main() -> int:
     return 0
 
 if __name__ == '__main__':
-    exit(main())
+
+    plt.figure('2022 YTD', figsize=(20,10))
+    xaxis = np.array([datetime.strptime('01-01-2022', '%d-%m-%Y'), datetime.strptime('01-01-2022', '%d-%m-%Y') + timedelta(days=100),  datetime.strptime('01-01-2022', '%d-%m-%Y') + timedelta(days=200)])
+    yaxis = np.array([0, 5000, 9000])
+    plt.plot(xaxis, yaxis,  label='2022')
+
+    xaxis = np.array([datetime.strptime('01-01-2022', '%d-%m-%Y'), datetime.strptime('01-01-2022', '%d-%m-%Y') + timedelta(days=100),  datetime.strptime('01-01-2022', '%d-%m-%Y') + timedelta(days=200),  datetime.strptime('01-01-2022', '%d-%m-%Y') + timedelta(days=365)])
+    yaxis = np.array([0, 4000, 7000, 13000])
+    plt.plot(xaxis, yaxis,  label='2021')
+
+
+    xaxis = np.array([datetime.strptime('01-01-2022', '%d-%m-%Y'), datetime.strptime('01-01-2022', '%d-%m-%Y') + timedelta(days=365)])
+    yaxis = np.array([6000, 6000])
+    plt.plot(xaxis, yaxis,  label='30%')
+    xaxis = np.array([datetime.strptime('01-01-2022', '%d-%m-%Y'), datetime.strptime('01-01-2022', '%d-%m-%Y') + timedelta(days=365)])
+    yaxis = np.array([8000, 8000])
+    plt.plot(xaxis, yaxis,  label='35%')
+    xaxis = np.array([datetime.strptime('01-01-2022', '%d-%m-%Y'), datetime.strptime('01-01-2022', '%d-%m-%Y') + timedelta(days=365)])
+    yaxis = np.array([12000, 12000])
+    plt.plot(xaxis, yaxis,  label='40%')
+
+    plt.legend()
+    plt.grid()
+
+    plt.show()
+    exit(0)
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--convert_file', help='You have to set file with deepmeta data to be converted')
+    args = parser.parse_args()
+    if args.convert_file:
+        exit(convert(args.convert_file))
+    else:
+        exit(update())
