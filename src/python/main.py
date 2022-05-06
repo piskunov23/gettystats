@@ -14,6 +14,7 @@ from datetime import date
 from sftp import copy_to_sftp
 from data import update_data, already_collected, convert
 from web import get_data
+from show import show
 
 #to run in browser
 #matplotlib.use("webagg")
@@ -83,9 +84,11 @@ if __name__ == '__main__':
     output_file = cfg.get('output_file')
     parser = argparse.ArgumentParser()
     parser.add_argument('--convert', help='Deepmeta export file to be converted')
-    parser.add_argument('--show', help='photo, illusrations, ')
+    parser.add_argument('--show', help='photo, illusrations, video')
     args = parser.parse_args()
     if args.convert:
         exit(convert(args.convert, output_file))
+    elif args.show:
+        exit(show(args.show, output_file))
     else:
         exit(update())

@@ -21,7 +21,7 @@ def already_collected(file_name):
     file.close()
     return False
 
-def read_data(file_name, current_date):
+def read_data(file_name):
     data = {}
     if not os.path.isfile(file_name):
         return data
