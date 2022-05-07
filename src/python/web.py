@@ -26,8 +26,8 @@ def get_data(username, password, secondary_password):
         return None
 
     html = web.get_page_source()
-    web.close_current_tab()
-    web.quit()
+    #web.close_current_tab()
+    #web.quit()
 
     if not KEY_LINE in html:
         print('Cant find required data on page, something wrong. exit.')

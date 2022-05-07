@@ -45,7 +45,7 @@ def add_empty_lines(data_file, ftp_file):
     print('Adding empty lines for ftp')
     data = read_data(data_file)
     date = datetime.strptime('01/01/2018', DATE_MASK)
-    date_end = datetime.now()
+    date_end = datetime.now() + timedelta(days=1)
     result = 'Date,Photo,Illustration,Video\n'
     while date.strftime(DATE_MASK) != date_end.strftime(DATE_MASK):
         if data.get(date.strftime(DATE_MASK)):
@@ -53,6 +53,7 @@ def add_empty_lines(data_file, ftp_file):
         else:
             result += date.strftime(DATE_MASK) + ',,,\n'
         date += timedelta(days=1)
+
 
     Path(os.path.dirname(ftp_file)).mkdir(parents=True, exist_ok=True)
     file = open(ftp_file, 'w+')
