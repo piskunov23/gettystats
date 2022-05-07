@@ -41,6 +41,28 @@ def update_data(file_name, data_as_string):
         file.write(value)
         file.close()
 
+def add_empty_lines(data_file, ftp_file):
+    print('Adding empty lines for ftp')
+    data = read_data(data_file)
+    date = datetime.strptime('01/01/2018', DATE_MASK)
+    date_end = datetime.now()
+    result = 'Date,Photo,Illustration,Video\n'
+    while date.strftime(DATE_MASK) != date_end.strftime(DATE_MASK):
+        print(date.strftime(DATE_MASK))
+        print(date.strftime(DATE_MASK))
+        if data.get(date.strftime(DATE_MASK)):
+            result += data.get(date.strftime(DATE_MASK))
+        else:
+            result += date.strftime(DATE_MASK) + ',,,\n'
+        date += timedelta(days=1)
+
+    Path(os.path.dirname(ftp_file)).mkdir(parents=True, exist_ok=True)
+    file = open(ftp_file, 'w+')
+    file.write(result)
+    file.close()
+    print('Ftp file update finished.')
+
+
 def convert(source_file, output_file) -> int:
     print('Conversion started from ' + source_file + ' to ' + output_file)
     if not os.path.isfile(source_file):

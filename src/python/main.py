@@ -12,7 +12,7 @@ from webbot import Browser
 from datetime import date
 
 from sftp import copy_to_sftp
-from data import update_data, already_collected, convert
+from data import update_data, already_collected, convert, add_empty_lines
 from web import get_data
 from show import show
 
@@ -59,36 +59,41 @@ def update() -> int:
     secondary_password = credentials.get('secondary_password')
 
     # check if it has been run today
-    output_file = cfg.get('output_file')
-    if already_collected(output_file):
-        print('The data already collected today, exit.')
-        return 1
+    #data_file = cfg.get('data_file')
+    #if already_collected(data_file):
+    #    print('The data already collected today, exit.')
+    #    return 1
 
     # get data update
-    data_as_string = get_data(username, password, secondary_password)
-    if data_as_string == None:
-        print('Data is not found, exit')
-        return 1
-    update_data(output_file, data_as_string)
+    #data_as_string = get_data(username, password, secondary_password)
+    #if data_as_string == None:
+    #    print('Data is not found, exit')
+    #    return 1
+    #update_data(data_file, data_as_string)
 
     # upload to ftp
     host = ftp.get('ftp_host')
     ftp_user = ftp.get('ftp_user')
     ftp_password = ftp.get('ftp_password')
-    copy_to_sftp(output_file, host, ftp_user, ftp_password)
+    ftp_file = ftp.get('ftp_file')
+    if host and ftp_user and ftp_password and ftp_file:
+        add_empty_lines(data_file, ftp_file)
+        copy_to_sftp(ftp_file, host, ftp_user, ftp_password)
+    else:
+        print('FTP host user or password is not defined, skipping ftp step')
 
     return 0
 
 if __name__ == '__main__':
     credentials, ftp, cfg = get_config()
-    output_file = cfg.get('output_file')
+    data_file = cfg.get('data_file')
     parser = argparse.ArgumentParser()
     parser.add_argument('--convert', help='Deepmeta export file to be converted')
     parser.add_argument('--show', help='photo, illusrations, video')
     args = parser.parse_args()
     if args.convert:
-        exit(convert(args.convert, output_file))
+        exit(convert(args.convert, data_file))
     elif args.show:
-        exit(show(args.show, output_file))
+        exit(show(args.show, data_file))
     else:
         exit(update())
