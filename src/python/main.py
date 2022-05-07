@@ -85,8 +85,18 @@ def update() -> int:
     return 0
 
 if __name__ == '__main__':
+    # change dir to repo root
+    abspath = os.path.abspath(__file__)
+    dname = os.path.dirname(abspath)
+    os.chdir(dname)
+    os.chdir('..')
+    os.chdir('..')
+
+    # get data file
     credentials, ftp, cfg = get_config()
     data_file = cfg.get('data_file')
+
+    # parse args
     parser = argparse.ArgumentParser()
     parser.add_argument('--convert', help='Deepmeta export file to be converted')
     parser.add_argument('--show', help='photo, illusrations, video')

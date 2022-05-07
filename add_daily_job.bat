@@ -1,1 +1,1 @@
-SCHTASKS /CREATE /SC DAILY /TN "Collect getty statistics" /TR "%cd%\run.bat > %cd%\log.txt" /ST 14:40
+SCHTASKS /CREATE /SC DAILY /TN "gettystats" /TR "%cd%\run.bat > %cd%\log.txt" /ST 03:00
