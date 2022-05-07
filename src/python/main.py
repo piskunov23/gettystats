@@ -59,17 +59,17 @@ def update() -> int:
     secondary_password = credentials.get('secondary_password')
 
     # check if it has been run today
-    #data_file = cfg.get('data_file')
-    #if already_collected(data_file):
-    #    print('The data already collected today, exit.')
-    #    return 1
+    data_file = cfg.get('data_file')
+    if already_collected(data_file):
+        print('The data already collected today, exit.')
+        return 1
 
     # get data update
-    #data_as_string = get_data(username, password, secondary_password)
-    #if data_as_string == None:
-    #    print('Data is not found, exit')
-    #    return 1
-    #update_data(data_file, data_as_string)
+    data_as_string = get_data(username, password, secondary_password)
+    if data_as_string == None:
+        print('Data is not found, exit')
+        return 1
+    update_data(data_file, data_as_string)
 
     # upload to ftp
     host = ftp.get('ftp_host')

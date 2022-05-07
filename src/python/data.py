@@ -48,8 +48,6 @@ def add_empty_lines(data_file, ftp_file):
     date_end = datetime.now()
     result = 'Date,Photo,Illustration,Video\n'
     while date.strftime(DATE_MASK) != date_end.strftime(DATE_MASK):
-        print(date.strftime(DATE_MASK))
-        print(date.strftime(DATE_MASK))
         if data.get(date.strftime(DATE_MASK)):
             result += data.get(date.strftime(DATE_MASK))
         else:
