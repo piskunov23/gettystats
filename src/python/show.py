@@ -55,12 +55,13 @@ def show(case, file_name) -> int:
     start_date = datetime.strptime('01/01/' + str(current_year), DATE_MASK)
     end_date = datetime.strptime('31/12/' + str(current_year), DATE_MASK)
 
-    index = 1
-    first_bucket = PHOTO_30
-    second_bucket = PHOTO_35
-    third_bucket = PHOTO_40
-    last_bucket = PHOTO_45
     match case:
+        case 'photo':
+            index = 1
+            first_bucket = PHOTO_30
+            second_bucket = PHOTO_35
+            third_bucket = PHOTO_40
+            last_bucket = PHOTO_45
         case 'illustration':
             index = 2
             first_bucket = ILLUSTRATION_30
