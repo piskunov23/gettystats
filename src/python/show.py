@@ -55,30 +55,28 @@ def show(case, file_name) -> int:
     start_date = datetime.strptime('01/01/' + str(current_year), DATE_MASK)
     end_date = datetime.strptime('31/12/' + str(current_year), DATE_MASK)
 
-    match case:
-        case 'photo':
-            index = 1
-            first_bucket = PHOTO_30
-            second_bucket = PHOTO_35
-            third_bucket = PHOTO_40
-            last_bucket = PHOTO_45
-        case 'illustration':
-            index = 2
-            first_bucket = ILLUSTRATION_30
-            second_bucket = ILLUSTRATION_35
-            third_bucket = ILLUSTRATION_40
-            last_bucket = ILLUSTRATION_45
-        case 'video':
-            index = 3
-            first_bucket = VIDEO_30
-            second_bucket = VIDEO_35
-            third_bucket = VIDEO_40
-            last_bucket = VIDEO_45
-        case _:
-            print('Unknown case: ' + case)
-            print('Use run|python main.py --show photo|illustration|video. Exit.')
-            exit()
-
+    if case == 'photo':
+        index = 1
+        first_bucket = PHOTO_30
+        second_bucket = PHOTO_35
+        third_bucket = PHOTO_40
+        last_bucket = PHOTO_45
+    elif case == 'illustration':
+        index = 2
+        first_bucket = ILLUSTRATION_30
+        second_bucket = ILLUSTRATION_35
+        third_bucket = ILLUSTRATION_40
+        last_bucket = ILLUSTRATION_45
+    elif case == 'video':
+        index = 3
+        first_bucket = VIDEO_30
+        second_bucket = VIDEO_35
+        third_bucket = VIDEO_40
+        last_bucket = VIDEO_45
+    else:
+        print('Unknown case: ' + case)
+        print('Use run|python main.py --show photo|illustration|video. Exit.')
+        exit()
 
     fig = plt.figure(case + ' ' + str(current_year) + ' YTD', figsize=(20,10))
 
