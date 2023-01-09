@@ -16,9 +16,6 @@ from data import update_data, already_collected, convert, add_empty_lines
 from web import get_data
 from show import show
 
-#to run in browser
-#matplotlib.use("webagg")
-
 FILE_CFG = 'src/config/getty.cfg'
 FILE_FALLBACK_CFG = 'src/config/getty.cfg.local'
 KEY_LINE = '<td><strong>Photo</strong></td>'
